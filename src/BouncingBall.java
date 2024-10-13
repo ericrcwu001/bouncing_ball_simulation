@@ -46,16 +46,31 @@ public class BouncingBall extends JPanel implements ActionListener{
     ArrayList<Ball> listOfBalls = new ArrayList<>();
 
     public BouncingBall(){
-        listOfBalls.add(Ball.getBall(10,10,30,5,5, Color.RED));
-        listOfBalls.add(Ball.getBall(200,200,30,-8, -5, Color.BLUE));
-        listOfBalls.add(Ball.getBall(50,50,30,-5, -5, Color.GREEN));
+        listOfBalls.add(Ball.getBall(10,10,30,1,1, Color.RED));
+        listOfBalls.add(Ball.getBall(200,200,30,-1, -1, Color.BLUE));
 
-        Timer timer = new Timer(10, this);
+        Timer timer = new Timer(1, this);
         timer.start();
     }
 
+    public boolean checkCollision(Ball firstBall, Ball secondBall){
+        int oneRadius = firstBall.diameter/2;
+        int twoRadius = secondBall.diameter/2;
+
+        int oneCenterX = firstBall.x + oneRadius;
+        int oneCenterY = firstBall.y + oneRadius;
+
+        int twoCenterX = secondBall.x + twoRadius;
+        int twoCenterY = secondBall.y + twoRadius;
+
+        double distance = Math.sqrt(Math.pow((oneCenterX - twoCenterX), 2) + Math.pow((oneCenterY - twoCenterY), 2));
+
+        return distance <= oneRadius + twoRadius;
+
+    }
+
     public void ballCollision(Ball firstBall, Ball secondBall){
-        if(Math.abs(firstBall.x-secondBall.x)<= firstBall.diameter && Math.abs(firstBall.y-secondBall.y) <= firstBall.diameter){
+        if(checkCollision(firstBall, secondBall)){
             firstBall.xSpeed = -firstBall.xSpeed;
             secondBall.xSpeed = -secondBall.xSpeed;
             firstBall.ySpeed = - firstBall.ySpeed;
@@ -63,7 +78,6 @@ public class BouncingBall extends JPanel implements ActionListener{
             System.out.println("success");
             System.out.println(firstBall.x-secondBall.x);
             System.out.println(firstBall.diameter);
-
         }
     }
     @Override
