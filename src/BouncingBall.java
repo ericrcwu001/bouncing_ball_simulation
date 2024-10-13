@@ -49,8 +49,10 @@ public class BouncingBall extends JPanel implements ActionListener{
         listOfBalls.add(Ball.getBall(150,0,30,0,1, Color.RED));
         listOfBalls.add(Ball.getBall(0,300,30,1, -1, Color.BLUE));
         listOfBalls.add(Ball.getBall(300,300,30,-1, -1, Color.GREEN));
+        listOfBalls.add(Ball.getBall(150,150,30,-1, 0, Color.PINK));
 
-        Timer timer = new Timer(10, this);
+
+        Timer timer = new Timer(1, this);
         timer.start();
     }
 
@@ -70,29 +72,20 @@ public class BouncingBall extends JPanel implements ActionListener{
         return distance <= oneRadius + twoRadius;
     }
 
-    public void ballCollision(Ball firstBall, Ball secondBall, Ball thirdBall){
-        if(checkCollision(firstBall, thirdBall)){
-            firstBall.xSpeed = -firstBall.xSpeed;
-            thirdBall.xSpeed = -thirdBall.xSpeed;
-            firstBall.ySpeed = - firstBall.ySpeed;
-            thirdBall.ySpeed = -thirdBall.ySpeed;
+    public void ballCollision(Ball[] balls){
+        for(int i = 1; i<balls.length; i++){
+            for(int j = 0; j<i; j++){
+                Ball firstBall = balls[j];
+                Ball secondBall = balls[i];
+
+                if(checkCollision(firstBall, secondBall)){
+                    firstBall.xSpeed = -firstBall.xSpeed;
+                    secondBall.xSpeed = -secondBall.xSpeed;
+                    firstBall.ySpeed = - firstBall.ySpeed;
+                    secondBall.ySpeed = -secondBall.ySpeed;
+                }
+            }
         }
-
-        if(checkCollision(secondBall, thirdBall)){
-            secondBall.xSpeed = -secondBall.xSpeed;
-            thirdBall.xSpeed = -thirdBall.xSpeed;
-            secondBall.ySpeed = - secondBall.ySpeed;
-            thirdBall.ySpeed = -thirdBall.ySpeed;
-        }
-
-
-        if(checkCollision(firstBall, secondBall)){
-            firstBall.xSpeed = -firstBall.xSpeed;
-            secondBall.xSpeed = -secondBall.xSpeed;
-            firstBall.ySpeed = - firstBall.ySpeed;
-            secondBall.ySpeed = -secondBall.ySpeed;
-        }
-
     }
     @Override
     public void paintComponent(Graphics g){
@@ -107,7 +100,7 @@ public class BouncingBall extends JPanel implements ActionListener{
             listOfBalls.get(i).move(getWidth(),getHeight());
         }
 
-        ballCollision(listOfBalls.get(0), listOfBalls.get(1), listOfBalls.get(2));
+        ballCollision(listOfBalls.toArray(new Ball[0]));
         repaint();
     }
 
