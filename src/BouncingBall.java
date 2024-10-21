@@ -27,7 +27,7 @@ class Ball{
         switchDirection(width, height);
     }
 
-    public void switchDirection(int width, int height) {
+    public void switchDirection(int width, int height) { // checks if hit window borders
         if (x < 0 || x + diameter > width) {
             xSpeed = -xSpeed;
         }
@@ -49,23 +49,22 @@ public class BouncingBall extends JPanel implements ActionListener{
         listOfBalls.add(Ball.getBall(150,0,30,0,1, Color.RED));
         listOfBalls.add(Ball.getBall(0,300,30,1, -1, Color.BLUE));
         listOfBalls.add(Ball.getBall(300,300,30,-1, -1, Color.GREEN));
-        listOfBalls.add(Ball.getBall(150,150,30,-1, 0, Color.PINK));
+//        listOfBalls.add(Ball.getBall(150,150,30,-1, 0, Color.PINK));
 
-
-        Timer timer = new Timer(1, this);
+        Timer timer = new Timer(10, this);
         timer.start();
     }
 
     public boolean checkCollision(Ball firstBall, Ball secondBall){
 
-        int oneRadius = firstBall.diameter/2;
-        int twoRadius = secondBall.diameter/2;
+        double oneRadius = firstBall.diameter/2.0;
+        double twoRadius = secondBall.diameter/2.0;
 
-        int oneCenterX = firstBall.x + oneRadius;
-        int oneCenterY = firstBall.y + oneRadius;
+        double oneCenterX = firstBall.x + oneRadius;
+        double oneCenterY = firstBall.y + oneRadius;
 
-        int twoCenterX = secondBall.x + twoRadius;
-        int twoCenterY = secondBall.y + twoRadius;
+        double twoCenterX = secondBall.x + twoRadius;
+        double twoCenterY = secondBall.y + twoRadius;
 
         double distance = Math.sqrt(Math.pow((oneCenterX - twoCenterX), 2) + Math.pow((oneCenterY - twoCenterY), 2));
 
@@ -73,8 +72,8 @@ public class BouncingBall extends JPanel implements ActionListener{
     }
 
     public void ballCollision(Ball[] balls){
-        for(int i = 1; i<balls.length; i++){
-            for(int j = 0; j<i; j++){
+        for(int i = 0; i < balls.length; i++){
+            for(int j = i+1; j < balls.length; j++){
                 Ball firstBall = balls[j];
                 Ball secondBall = balls[i];
 
